@@ -102,23 +102,23 @@ module.exports = class extends Generator {
 			});
 	}
 
-	configuring(){
+	configuring() {
 
 	}
 
-	default(){
+	default() {
 
 	}
 
-	conflicts(){
+	conflicts() {
 
 	}
 
-	install(){
+	install() {
 
 	}
 
-	end(){
+	end() {
 
 	}
 };
