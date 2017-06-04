@@ -1,5 +1,13 @@
 // TODO: update constants. No strings should be used in functions
 
+//************************************************
+// NODE MODULES
+//************************************************
+const fs = require('fs');
+
+//************************************************
+// GULP PLUGINS
+//************************************************
 const gulp = require('gulp');
 const gulp_less = require('gulp-less');
 const gulp_uglify = require('gulp-uglify');
@@ -8,6 +16,12 @@ const gulp_clean_css = require('gulp-clean-css');
 const gulp_htmlmin = require('gulp-htmlmin');
 const gulp_inject = require('gulp-inject');
 const gulp_main_bower_files = require('main-bower-files');
+const gulp_imagemin = require('gulp-imagemin');
+
+//************************************************
+// OTHER DEPENDENCIES
+//************************************************
+const bowerrc = JSON.parse(fs.readFileSync('./.bowerrc'));
 
 //************************************************
 // CONSTANTS
@@ -16,9 +30,42 @@ const LESS_FILES = 'src/less/**/*.less';
 const JS_FILES = 'src/js/**/*.js';
 const IMG_FILES = 'src/img/**/*.{jpeg,jpg,png}';
 const HTML_FILES = 'src/**/*.html';
+const VENDOR_FILES = bowerrc.directory;
 
 const DEST_PROD = 'dist';
 const DEST_DEV = '.tmp';
+
+const DEST_PROD_IMG = `${DEST_PROD}/img`;
+const DEST_PROD_JS = `${DEST_PROD}/js`;
+const DEST_PROD_CSS = `${DEST_PROD}/css`;
+const DEST_PROD_HTML = `${DEST_PROD}`;
+
+const DEST_DEV_IMG = `${DEST_DEV}/img`;
+const DEST_DEV_JS = `${DEST_DEV}/js`;
+const DEST_DEV_CSS = `${DEST_DEV}/css`;
+const DEST_DEV_HTML = `${DEST_DEV}`;
+
+//************************************************
+// TASK HANDLER FOR IMAGES
+//************************************************
+function commonBuildImg() {
+	return gulp
+		.src(IMG_FILES)
+		.pipe(gulp_imagemin([
+			gulp_imagemin.jpegtran(),
+			gulp_imagemin.optipng()
+		]));
+}
+
+function devBuildImg() {
+	let stream = commonBuildImg();
+	return stream.pipe(gulp.dest(DEST_DEV_IMG));
+}
+
+function prodBuildImg() {
+	let stream = commonBuildImg();
+	return stream.pipe(gulp.dest(DEST_PROD_IMG));
+}
 
 //************************************************
 // TASK HANDLER FOR HTML
@@ -146,22 +193,36 @@ function serve() {
 	let watcher_less;
 	watcher_less = gulp.watch(LESS_FILES, ['build:dev:less']);
 	watcher_less.on('change', watcherChangeEvent);
+
+	let watcher_html;
+	watcher_html = gulp.watch(HTML_FILES, ['build:dev:html']);
+	watcher_html.on('change', watcherChangeEvent);
+
+	let watcher_vendor;
+	watcher_vendor = gulp.watch(VENDOR_FILES, ['build:dev:vendor']);
+	watcher_vendor.on('change', watcherChangeEvent);
+
+	let watcher_img;
+	watcher_img = gulp.watch(IMG_FILES, ['build:dev:img']);
+	watcher_img.on('change', watcherChangeEvent);
 }
 
 //************************************************
 // DEFINE GULP TASKS
 //************************************************
-gulp.task('build', ['build:js', 'build:vendor', 'build:less'], prodBuildHtml);
+gulp.task('build', ['build:js', 'build:vendor', 'build:less', 'build:img'], prodBuildHtml);
 gulp.task('build:js', prodBuildJs);
 gulp.task('build:less', prodBuildLess);
 gulp.task('build:html', prodBuildHtml);
 gulp.task('build:vendor', prodBuildVendor);
+gulp.task('build:img', prodBuildImg);
 
-gulp.task('build:dev', ['build:dev:js', 'build:dev:vendor', 'build:dev:less'], devBuildHtml);
+gulp.task('build:dev', ['build:dev:js', 'build:dev:vendor', 'build:dev:less', 'build:dev:img'], devBuildHtml);
 gulp.task('build:dev:js', devBuildJs);
 gulp.task('build:dev:less', devBuildLess);
-gulp.task('build:dev:vendor', devBuildVendor);
 gulp.task('build:dev:html', devBuildHtml);
+gulp.task('build:dev:vendor', devBuildVendor);
+gulp.task('build:dev:img', devBuildImg);
 
 gulp.task('serve', ['build:dev'], serve);
 gulp.task('default', ['serve']);
