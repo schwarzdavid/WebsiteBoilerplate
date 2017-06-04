@@ -1,0 +1,22 @@
+{
+  "name": "cv_david_schwarz",
+  "authors": [
+    "David Schwarz <schwarz.david10@gmail.com>"
+  ],
+  "description": "",
+  "main": "src/index.html",
+  "license": "MIT",
+  "homepage": "https://schwarzdavid.rocks",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vivus": "^0.4.0",
+    "bootstrap": "^3.3.7"
+  }
+}
