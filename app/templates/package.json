@@ -1,13 +1,8 @@
 {
-  "name": "generator-schwarzdavid-website",
-  "version": "0.1.0",
+  "name": "<%= name %>",
+  "version": "1.0.0",
   "description": "",
-  "files": [
-    "app"
-  ],
-  "keywords": [
-    "yeoman-generator"
-  ],
+  "main": "src/index.html",
   "dependencies": {
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.4.1",
@@ -21,8 +16,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "gulp",
+    "build": "gulp build",
+    "build:dev": "gulp build:dev"
   },
-  "author": "David Schwarz <schwarz.david10@gmail.com>",
+  "author": "<%- author %>",
   "license": "ISC"
 }

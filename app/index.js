@@ -24,111 +24,163 @@ module.exports = class extends Generator {
 	}
 
 	initializing() {
-		this.paths = {};
+		this.options = {};
 	}
 
 	prompting() {
-		const that = this;
-
-		const buildDirs = [
-			{
-				type: 'input',
-				name: 'srcFolder',
-				message: 'Enter your source directory',
-				default: 'src'
-			},
-			{
-				type: 'input',
-				name: 'tmpFolder',
-				message: 'Enter your temp directory',
-				default: '.tmp'
-			},
-			{
-				type: 'input',
-				name: 'distFolder',
-				message: 'Enter your dist directory',
-				default: 'dist'
-			}
-		];
-
-		const assetDirs = [
-			{
-				type: 'input',
-				name: 'imgFolder',
-				message: 'Enter your image directory',
-				default: 'img'
-			},
-			{
-				type: 'input',
-				name: 'jsFolder',
-				message: 'Enter your javascript directory',
-				default: 'js'
-			},
-			{
-				type: 'input',
-				name: 'lessFolder',
-				message: 'Enter your less directory',
-				default: 'less'
-			},
-			{
-				type: 'input',
-				name: 'cssFolder',
-				message: 'Enter your css directory',
-				default: 'css'
-			},
-			{
-				type: 'input',
-				name: 'vendorFolder',
-				message: 'Enter your vendor directory',
-				default: 'vendor'
-			}
-		];
-
-		return that.prompt(buildDirs)
-			.then(function (answers) {
-				that.log(chalk.green('\n==========================================================================\n'));
-
-				that.paths.src = answers.srcFolder;
-				that.paths.tmp = answers.tmpFolder;
-				that.paths.dist = answers.distFolder;
-
-				return that.prompt(assetDirs);
-			})
-			.then(function (answers) {
-				that.paths.js = answers.jsFolder;
-				that.paths.less = answers.lessFolder;
-				that.paths.vendor = answers.vendorFolder;
-				that.paths.img = answers.imgFolder;
-			});
+		return this._askForDefaults();
 	}
 
 	_askForDefaults() {
 		const questions = [
 			{
 				type: 'input',
-				name: 'projectName',
+				name: 'name',
 				message: 'Enter your site-name',
-				default: 'new-website',
+				default: this.appname,
 				validate: function (input) {
 					return input.length > 0;
 				}
 			},
 			{
 				type: 'input',
-				name: 'author'
+				name: 'author',
+				message: 'Author',
+				default: `${this.user.git.name()} <${this.user.git.email()}>`,
+				filter: function (input) {
+					return input.replace(/"/g, '\\"');
+				}
+			},
+			{
+				type: 'checkbox',
+				name: 'dependencies',
+				message: 'Install dependencies',
+				choices: [
+					{
+						name: 'Bootstrap 3',
+						value: 'bootstrap'
+					},
+					{
+						name: 'jQuery 3.2.1',
+						value: 'jquery'
+					}
+				]
+			},
+			{
+				type: 'confirm',
+				name: 'skipInstall',
+				message: 'Skip bower & npm install?',
+				default: false
+			},
+			{
+				type: 'confirm',
+				name: 'skipGit',
+				message: 'Skip git initialization?',
+				default: false
 			}
 		];
+
+		return this.prompt(questions).then((answers) => {
+			this.options.name = answers.name;
+			this.options.author = answers.author;
+			this.options.dependencies = answers.dependencies;
+			this.options.skipInstall = answers.skipInstall;
+			this.options.skipGit = answers.skipGit;
+		});
 	}
 
 	configuring() {
-		_writingPackageJson();
-		_writingGulpfile();
+		this.log(chalk.green('\n ============================= COPY FILES =================================\n'));
+
+		this._writingPackageJson();
+		this._writingBowerJson();
+		this._writingIndexHtml();
+
+		this._copyStaticFiles();
 	}
 
-	_writingPackageJson(){
+	_writingPackageJson() {
 		this.fs.copyTpl(
 			this.templatePath('package.json'),
-			this.destinationPath('package.json')
+			this.destinationPath('package.json'),
+			{
+				name: this.options.name,
+				author: this.options.author
+			}
+		);
+	}
+
+	_writingBowerJson(){
+		this.fs.copyTpl(
+			this.templatePath('bower.json'),
+			this.destinationPath('bower.json'),
+			{
+				name: this.options.name,
+				author: this.options.author,
+				dependencies: this.options.dependencies
+			}
+		);
+	}
+
+	_writingIndexHtml(){
+		this.fs.copyTpl(
+			this.templatePath('src/index.html'),
+			this.destinationPath('src/index.html'),
+			{
+				title: this.options.name
+			}
+		)
+	}
+
+	_copyStaticFiles(){
+		this.fs.copy(
+			this.templatePath('src/img'),
+			this.destinationPath('src/img'),
+			{
+				globOptions: {
+					dot: true
+				}
+			}
+		);
+
+		this.fs.copy(
+			this.templatePath('src/js'),
+			this.destinationPath('src/js'),
+			{
+				globOptions: {
+					dot: true
+				}
+			}
+		);
+
+		this.fs.copy(
+			this.templatePath('src/less'),
+			this.destinationPath('src/less'),
+			{
+				globOptions: {
+					dot: true
+				}
+			}
+		);
+
+		this.fs.copy(
+			this.templatePath('.editorconfig'),
+			this.destinationPath('.editorconfig')
+		);
+
+		this.fs.copy(
+			this.templatePath('.gitignore'),
+			this.destinationPath('.gitignore')
+		);
+
+		this.fs.copy(
+			this.templatePath('gulpfile.js'),
+			this.destinationPath('gulpfile.js')
+		);
+
+		this.fs.copy(
+			this.templatePath('.bowerrc'),
+			this.destinationPath('.bowerrc')
 		);
 	}
 
@@ -141,10 +193,26 @@ module.exports = class extends Generator {
 	}
 
 	install() {
+		if(!this.options.skipInstall){
+			this.log(chalk.green('\n ========================== INSTALL DEPENDENCIES ==========================\n'));
 
+			this.npmInstall();
+			this.bowerInstall();
+		}
 	}
 
 	end() {
+		if(!this.options.skipGit) {
+			this.spawnCommand('git init');
+		}
 
+		this.log(
+			chalk.green(
+				' ==========================================================================\n' +
+				'                                 SUCCESS\n' +
+				'                              run "npm serve"\n' +'
+				' ==========================================================================\n'
+			);
+		);
 	}
 };

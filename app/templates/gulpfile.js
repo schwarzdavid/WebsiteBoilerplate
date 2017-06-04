@@ -134,7 +134,7 @@ function prodBuildJs() {
 // TASK HANDLER FOR VENDOR
 //************************************************
 function commonBuildVendor() {
-	return gulp.src(gulp_main_bower_files('**/*.js'));
+	return gulp.src(gulp_main_bower_files(['**/*.js', '!**/*.min.js']));
 }
 
 function devBuildVendor() {

@@ -1,22 +1,26 @@
 {
-  "name": "cv_david_schwarz",
-  "authors": [
-    "David Schwarz <schwarz.david10@gmail.com>"
-  ],
-  "description": "",
-  "main": "src/index.html",
-  "license": "MIT",
-  "homepage": "https://schwarzdavid.rocks",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "vivus": "^0.4.0",
-    "bootstrap": "^3.3.7"
-  }
+	"name": "<%= name %>",
+	"authors": [
+		"<%- author %>"
+	],
+	"description": "",
+	"main": "src/index.html",
+	"license": "MIT",
+	"private": true,
+	"overrides": {
+		"bootstrap": {
+			"dependencies": {
+				"jquery": "^3.2.1"
+			}
+		}
+	},
+	"dependencies": {
+		<% if(dependencies.indexOf('bootstrap') >= 0){ %>
+		"bootstrap": "3.3.7",
+		<% } %>
+
+		<% if(dependencies.indexOf('jquery') >= 0){ %>
+		"jquery": "3.2.1"
+		<% } %>
+	}
 }
