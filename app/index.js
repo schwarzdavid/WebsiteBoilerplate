@@ -28,9 +28,9 @@ module.exports = class extends Generator {
 	}
 
 	prompting() {
-		let that = this;
+		const that = this;
 
-		let buildDirs = [
+		const buildDirs = [
 			{
 				type: 'input',
 				name: 'srcFolder',
@@ -51,7 +51,7 @@ module.exports = class extends Generator {
 			}
 		];
 
-		let assetDirs = [
+		const assetDirs = [
 			{
 				type: 'input',
 				name: 'imgFolder',
@@ -102,8 +102,34 @@ module.exports = class extends Generator {
 			});
 	}
 
-	configuring() {
+	_askForDefaults() {
+		const questions = [
+			{
+				type: 'input',
+				name: 'projectName',
+				message: 'Enter your site-name',
+				default: 'new-website',
+				validate: function (input) {
+					return input.length > 0;
+				}
+			},
+			{
+				type: 'input',
+				name: 'author'
+			}
+		];
+	}
 
+	configuring() {
+		_writingPackageJson();
+		_writingGulpfile();
+	}
+
+	_writingPackageJson(){
+		this.fs.copyTpl(
+			this.templatePath('package.json'),
+			this.destinationPath('package.json')
+		);
 	}
 
 	default() {
