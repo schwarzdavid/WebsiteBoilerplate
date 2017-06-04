@@ -51,3 +51,5 @@ those files change, the build will be updated.
 * [ ] Add JSLint to `gulp build:dev:js`
 * [ ] Start Webserver at `gulp serve`
 * [ ] Handle all html-files - not only _index.html_
+* [ ] Extend possible dependency options
+* [ ] Add common files to .gitignore
