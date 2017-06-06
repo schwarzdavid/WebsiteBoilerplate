@@ -37,7 +37,7 @@ const LESS_FILES = `${SOURCE_FOLDER}/less/**/*.less`;
 const JS_FILES = `${SOURCE_FOLDER}/js/**/*.js`;
 const IMG_FILES = `${SOURCE_FOLDER}/img/**/*.{jpeg,jpg,png}`;
 const HTML_FILES = `${SOURCE_FOLDER}/**/*.html`;
-const VENDOR_FILES = '*.js';
+const VENDOR_FILES = '**/*.js';
 const OTHER_FILES = [`${SOURCE_FOLDER}/**/*`, `!*.{html, jpeg, jpg, png, js, less}`];
 
 // dest folders for production
