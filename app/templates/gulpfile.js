@@ -1,5 +1,3 @@
-// TODO: update constants. No strings should be used in functions
-
 //************************************************
 // LOAD DEPENDENCIES
 //************************************************
@@ -132,7 +130,7 @@ init();
 //************************************************
 function buildImg() {
 	return gulp.src(options.src.img)
-		.pipe(gulp_imagemin())
+		.pipe(gulp_if(!devMode, gulp_imagemin()))
 		.pipe(gulp.dest(options.dest.img));
 }
 

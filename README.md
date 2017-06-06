@@ -37,19 +37,13 @@ Enjoy!
 
 ## Commands
 
-* `gulp serve` Runs `gulp build:dev` and add a watcher to all relevant files. Whenever one of 
+* `gulp serve` Runs `gulp build` and add a watcher to all relevant files. Whenever one of 
 those files change, the build will be updated.
-* `gulp build:dev` Builds your website to the _.tmp_-directory but keeps all of your files unminified
-* `gulp build:dev:less` Creates css-files from your less-files
-* `gulp build:dev:js` Builds only javascript-files
-* `gulp build:dev:html` Builds _index.html_. Basically it only injects newly added files to the html-file.
-* `gulp build:dev:img` Injects all js-files into _.tmp_-folder
-* `gulp build:dev:vendor` Injects all js-files from bower dependencies into _.tmp_-folder
-* `gulp build` Builds your website to the _dist_-directory, ready for production
-* `gulp build:less` Compiles your less-files to css, concats them and outputs a minified _main.min.css_ file
-* `gulp build:js` Concats and minifies all js-files and outputs _main.min.js_
-* `gulp build:html` Injects all files into _index.html_, minifies the code and remove comments
-* `gulp build:img` Basically the same as `gulp build:dev:img` does
+* `gulp build` Runs `build:less`, `build:js`, `build:img`, `build:vendor` and `build:html`
+* `gulp build:less` Compiles your less-files to css, optionally concats them and outputs a minified _main.min.css_ file
+* `gulp build:js` If in production mode, it concats, minifies all js-files and outputs _main.min.js_
+* `gulp build:html` Injects all files into _index.html_, optionally minifies the code and removes comments
+* `gulp build:img` If in production mode, minifies all images and removes meta information
 * `gulp build:vendor` Concats and minifies all bower dependencies into _vendor.min.js_
 
 ## Todos
