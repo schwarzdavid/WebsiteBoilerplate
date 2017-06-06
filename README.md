@@ -1,4 +1,4 @@
-# Website generator for Yeoman
+# Website boilerplate generator for Yeoman
 
 [![NPM version](https://badge.fury.io/js/generator-schwarzdavid-website.svg)](https://www.npmjs.com/package/generator-schwarzdavid-website)
 
