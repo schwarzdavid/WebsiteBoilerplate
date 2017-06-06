@@ -12,12 +12,18 @@ In order to use this generator properly, you need to have `NodeJS`, `Npm` and `G
 and `gulp-cli`. Make sure you have all those dependencies installed by running `npm i -g yo gulp-cli bower`. If you 
 already have those installed, you wont install them twice when you run this command.
 
-When you have all dependencies installed, you can run `npm i -g generator-schwarzdavid-website` to install the package.
+When you have all dependencies installed, you can run
 
-Now go to your empty project directory and run `yo schwarzdavid-website`. The boilerplate will be created in the 
-directory you are currently in. A git project will be initialized and all dependency installed.
+**`npm i -g generator-schwarzdavid-website`** 
 
-All you have to do is to run `gulp serve` to build your website and start working.
+to install the package. Now go to your empty project directory and run 
+
+**`yo schwarzdavid-website`**. 
+
+The boilerplate will be created in the directory you are currently in and a git project will be initialized 
+and all dependencies installed.
+
+All you have to do now is to run `gulp serve` to build your website and start working.
 
 Enjoy!
 
