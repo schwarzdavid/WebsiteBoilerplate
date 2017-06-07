@@ -9,7 +9,7 @@ const chalk = require('chalk');
 // LOAD GULP PLUGINS
 //************************************************
 const gulp = require('gulp');
-const gulp_babel = require('gulp-bable');
+const gulp_babel = require('gulp-babel');
 const gulp_clean_css = require('gulp-clean-css');
 const gulp_concat = require('gulp-concat');
 const gulp_copy = require('gulp-copy');

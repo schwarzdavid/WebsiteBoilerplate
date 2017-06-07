@@ -13,7 +13,7 @@
     "url": "https://github.com/schwarzdavid/generator-schwarzdavid-website/issues"
   },
   "main": "app/index.js",
-  "homepage": "https://schwarzdavid.rocks",
+  "homepage": "https://github.com/schwarzdavid/generator-schwarzdavid-website#readme",
   "keywords": [
     "yeoman-generator",
     "html5",
