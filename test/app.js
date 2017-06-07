@@ -30,13 +30,25 @@ describe('schwarzdavid-website', () => {
 		assert.file(expectedFiles);
 	});
 
-	it('fills bower.json with correct information', () => {
+	it('fills bower.json with correct dependencies', () => {
 		assert.JSONFileContent('bower.json', {
-			name: 'generator-test',
-			authors: ['test <test@example.com>'],
 			dependencies: {
 				bootstrap: '~3.3.7'
 			}
+		});
+	});
+
+	it('injects valid name and author into bower.json', () => {
+		assert.JSONFileContent('bower.json', {
+			name: 'generator-test',
+			authors: ['test <test@example.com>']
+		});
+	});
+
+	it('injects valid name and author into package.json', () => {
+		assert.JSONFileContent('package.json', {
+			name: 'generator-test',
+			author: 'test <test@example.com>'
 		});
 	});
 });
