@@ -52,6 +52,8 @@ those files change, the build will be updated.
 * [ ] Start Webserver at `gulp serve`
 * [ ] Handle all html-files - not only _index.html_
 * [ ] Extend possible dependency options
-* [ ] Add common files to .gitignore
+* [ ] Write tests
+* [ ] Add Modernizr support
+* [x] Add common files to .gitignore
 * [x] Add babel to `gulp build:js`
 * [x] Write sourcemaps

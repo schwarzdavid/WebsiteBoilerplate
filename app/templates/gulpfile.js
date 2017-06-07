@@ -84,8 +84,7 @@ let options = {
 	files: {
 		jsMin: DEST_JS_MIN_NAME,
 		vendorMin: DEST_VENDOR_MIN_NAME,
-		cssMin: DEST_CSS_MIN_NAME,
-		bowerJson: 'bower.json'
+		cssMin: DEST_CSS_MIN_NAME
 	}
 };
 
@@ -103,6 +102,9 @@ let devOptionOverrides = {
 
 // True if devMode is enabled
 let devMode = false;
+
+// bower files folder
+let bowerFolder = JSON.parse(fs.readFileSync('.bowerrc')).directory;
 
 //************************************************
 // INIZIALIZATION
@@ -241,7 +243,7 @@ function serve() {
 	watcher_html.on('change', watcherChangeEvent);
 
 	let watcher_vendor;
-	watcher_vendor = gulp.watch(options.files.bowerJson, ['build:vendor']);
+	watcher_vendor = gulp.watch(bowerFolder, ['build:vendor']);
 	watcher_vendor.on('change', watcherChangeEvent);
 
 	let watcher_img;
