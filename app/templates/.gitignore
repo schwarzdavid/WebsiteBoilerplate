@@ -1,6 +1,48 @@
+#########################################
+# Project folders and files
+#########################################
 .tmp/
 dist/
-.idea/
 src/vendor/
 node_modules/
-npm-debug.log
+bower_components/
+
+#########################################
+# Common IDE Folders
+#########################################
+.idea/
+.nbproject/
+.vscode/
+.vagrant/
+
+
+#########################################
+# Common unused files
+#########################################
+*.sql
+*.sqlite
+*.log
+
+#########################################
+# OS generated files
+#########################################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+#########################################
+# PACKAGES
+#########################################
+*.zip
+*.7z
+*.rar
+*.tar
+*.jar
+*.dmg
+*.gz
+*.iso
