@@ -3,7 +3,7 @@ const helpers = require('yeoman-test');
 const assert = require('yeoman-assert');
 
 describe('schwarzdavid-website', () => {
-	beforeEach( () => {
+	before( () => {
 		return helpers.run(path.join(__dirname, '../app')).withPrompts({
 			name: 'generator-test',
 			author: 'test <test@example.com>',
@@ -35,7 +35,7 @@ describe('schwarzdavid-website', () => {
 			name: 'generator-test',
 			authors: ['test <test@example.com>'],
 			dependencies: {
-				bootstrap: '3.3.7'
+				bootstrap: '~3.3.7'
 			}
 		});
 	});

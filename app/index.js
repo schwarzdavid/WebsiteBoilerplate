@@ -1,6 +1,7 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const figlet = require('figlet');
+const _ = require('lodash');
 
 module.exports = class extends Generator {
 	constructor(args, opts) {
@@ -57,11 +58,11 @@ module.exports = class extends Generator {
 				message: 'Install dependencies',
 				choices: [
 					{
-						name: 'Bootstrap 3',
+						name: 'Bootstrap (3.3.7)',
 						value: 'bootstrap'
 					},
 					{
-						name: 'jQuery 3.2.1',
+						name: 'jQuery (3.2.1)',
 						value: 'jquery'
 					}
 				]
@@ -110,29 +111,56 @@ module.exports = class extends Generator {
 		);
 	}
 
-	_writingBowerJson(){
+	_writingBowerJson() {
 		this.fs.copyTpl(
 			this.templatePath('bower.json'),
 			this.destinationPath('bower.json'),
 			{
 				name: this.options.name,
-				author: this.options.author,
-				dependencies: this.options.dependencies
+				author: this.options.author
 			}
 		);
+
+		let bowerJson = this.fs.readJSON(this.destinationPath('bower.json'), {});
+
+		for (let dependency of this.options.dependencies) {
+			let pushDependency = null;
+
+			switch (dependency) {
+				case 'bootstrap':
+					pushDependency = {
+						name: 'bootstrap',
+						version: '~3.3.7'
+					};
+					break;
+
+				case 'jquery':
+					pushDependency = {
+						name: 'jquery',
+						version: '~3.2.1'
+					};
+					break;
+			}
+
+			if (pushDependency) {
+				bowerJson.dependencies[pushDependency.name] = pushDependency.version;
+			}
+		}
+
+		this.fs.writeJSON(this.destinationPath('bower.json'), bowerJson);
 	}
 
-	_writingIndexHtml(){
+	_writingIndexHtml() {
 		this.fs.copyTpl(
 			this.templatePath('src/index.html'),
 			this.destinationPath('src/index.html'),
 			{
 				title: this.options.name
 			}
-		)
+		);
 	}
 
-	_copyStaticFiles(){
+	_copyStaticFiles() {
 		this.fs.copy(
 			this.templatePath('src/img'),
 			this.destinationPath('src/img'),
@@ -193,7 +221,7 @@ module.exports = class extends Generator {
 	}
 
 	install() {
-		if(!this.options.skipInstall){
+		if (!this.options.skipInstall) {
 			this.log(chalk.green('\n ========================== INSTALL DEPENDENCIES ==========================\n'));
 
 			this.npmInstall();
@@ -202,7 +230,7 @@ module.exports = class extends Generator {
 	}
 
 	end() {
-		if(!this.options.skipGit) {
+		if (!this.options.skipGit) {
 			this.spawnCommand('git init');
 		}
 
