@@ -53,3 +53,5 @@ those files change, the build will be updated.
 * [ ] Handle all html-files - not only _index.html_
 * [ ] Extend possible dependency options
 * [ ] Add common files to .gitignore
+* [x] Add babel to `gulp build:js`
+* [x] Write sourcemaps

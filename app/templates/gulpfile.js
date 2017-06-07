@@ -9,17 +9,19 @@ const chalk = require('chalk');
 // LOAD GULP PLUGINS
 //************************************************
 const gulp = require('gulp');
-const gulp_less = require('gulp-less');
-const gulp_uglify = require('gulp-uglify');
-const gulp_concat = require('gulp-concat');
+const gulp_babel = require('gulp-bable');
 const gulp_clean_css = require('gulp-clean-css');
-const gulp_htmlmin = require('gulp-htmlmin');
-const gulp_inject = require('gulp-inject');
-const gulp_main_bower_files = require('main-bower-files');
-const gulp_imagemin = require('gulp-imagemin');
+const gulp_concat = require('gulp-concat');
 const gulp_copy = require('gulp-copy');
-const gulp_options = require('gulp-options');
+const gulp_htmlmin = require('gulp-htmlmin');
 const gulp_if = require('gulp-if');
+const gulp_inject = require('gulp-inject');
+const gulp_imagemin = require('gulp-imagemin');
+const gulp_less = require('gulp-less');
+const gulp_main_bower_files = require('main-bower-files');
+const gulp_options = require('gulp-options');
+const gulp_sourcemaps = require('gulp-sourcemaps');
+const gulp_uglify = require('gulp-uglify');
 
 //************************************************
 // CONSTANTS
@@ -176,10 +178,13 @@ function buildHtml() {
 function buildJs() {
 	return gulp
 		.src(options.src.js)
+		.pipe(gulp_babel())
 
 		// For production only
+		.pipe(gulp_if(!devMode, gulp_sourcemaps.init()))
 		.pipe(gulp_if(!devMode, gulp_uglify()))
 		.pipe(gulp_if(!devMode, gulp_concat(options.files.jsMin)))
+		.pipe(gulp_if(!devMode, gulp_sourcemaps.write()))
 
 		.pipe(gulp.dest(options.dest.js));
 }
@@ -207,8 +212,10 @@ function buildLess() {
 		.pipe(gulp_less())
 
 		// For production only
+		.pipe(gulp_if(!devMode, gulp_sourcemaps.init()))
 		.pipe(gulp_if(!devMode, gulp_concat(options.files.cssMin)))
 		.pipe(gulp_if(!devMode, gulp_clean_css()))
+		.pipe(gulp_if(!devMode, gulp_sourcemaps.write()))
 
 		.pipe(gulp.dest(options.dest.css));
 }
